@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Chat Libre</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let msg of mensajes">
+      <ion-label>
+        <strong>{{ msg.autor }}</strong>
+        <p>{{ msg.texto }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-input placeholder="Escribe tu mensaje..." [(ngModel)]="mensajeNuevo"></ion-input>
+      <ion-button slot="end" (click)="enviarMensaje()" fill="clear">
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

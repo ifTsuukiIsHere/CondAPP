@@ -1,7 +1,0 @@
-{
-  "name": "proyectoCondAPP",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

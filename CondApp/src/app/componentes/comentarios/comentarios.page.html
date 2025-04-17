@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Comentarios</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let c of comentarios">
+      <ion-label>
+        <strong>{{ c.autor }}:</strong>
+        <p>{{ c.texto }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-item>
+    <ion-input placeholder="Escribe un comentario..." [(ngModel)]="comentarioNuevo"></ion-input>
+    <ion-button slot="end" (click)="enviarComentario()" fill="clear">
+      <ion-icon name="send-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+</ion-content>

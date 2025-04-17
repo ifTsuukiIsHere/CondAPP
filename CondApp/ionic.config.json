@@ -1,0 +1,7 @@
+{
+  "name": "CodApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
