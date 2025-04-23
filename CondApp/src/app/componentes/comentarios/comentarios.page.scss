@@ -1,0 +1,16 @@
+.boton-cerrar {
+    padding: 0;
+    min-width: auto;
+    height: auto;
+  
+    svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+  
+    ion-ripple-effect {
+      display: none;
+    }
+  }
+  

@@ -1,0 +1,16 @@
+.boton-flecha {
+    padding: 0;
+    min-width: auto;
+    height: auto;
+  
+    svg {
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+  
+    ion-ripple-effect {
+      display: none; // elimina el efecto de onda
+    }
+  }
+  

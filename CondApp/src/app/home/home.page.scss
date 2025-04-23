@@ -25,3 +25,35 @@
 #container a {
   text-decoration: none;
 }
+
+ion-fab-button {
+  ion-icon {
+    font-size: 26px;
+    color: white; // asegúrate que contraste con el azul
+  }
+}
+
+@keyframes bounce-loop {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.fab-chat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounce-loop 1.6s infinite ease-in-out;
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  ion-ripple-effect {
+    display: none;
+  }
+}

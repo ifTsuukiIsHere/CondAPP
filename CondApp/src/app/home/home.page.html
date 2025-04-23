@@ -132,9 +132,12 @@
     
   </ng-container>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="abrirChatLibre()">
-      <ion-icon name="chatbubbles-outline"></ion-icon>
+    <ion-fab-button color="primary" class="fab-chat" (click)="abrirChatLibre()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 512 512">
+        <path fill="white" d="M408 96H104c-13.3 0-24 10.7-24 24v192c0 13.3 10.7 24 24 24h72v56c0 4.4 5.3 6.7 8.4 3.6L270 336h138c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24z"/>
+      </svg>
     </ion-fab-button>
   </ion-fab>
+  
   
 </ion-content>
