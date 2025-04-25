@@ -7,7 +7,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
@@ -21,5 +21,13 @@ export const routes: Routes = [
   {
     path: 'chat-libre',
     loadComponent: () => import('./pages/chat-libre/chat-libre.page').then( m => m.ChatLibrePage)
+  },  {
+    path: 'crear-anuncio',
+    loadComponent: () => import('./pages/crear-anuncio/crear-anuncio.page').then( m => m.CrearAnuncioPage)
   },
+  {
+    path: 'gestionar-reclamos',
+    loadComponent: () => import('./pages/gestionar-reclamos/gestionar-reclamos.page').then( m => m.GestionarReclamosPage)
+  },
+
 ];

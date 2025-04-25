@@ -8,13 +8,11 @@
           <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 0 0-1.41 1.41L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z" fill="white"/>
         </svg>
       </ion-button>
-      
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-
-<ion-content class="ion-padding">
+<ion-content #content class="ion-padding">
   <ion-list>
     <ion-item *ngFor="let c of comentarios">
       <ion-label>
@@ -23,11 +21,24 @@
       </ion-label>
     </ion-item>
   </ion-list>
-
-  <ion-item>
-    <ion-input placeholder="Escribe un comentario..." [(ngModel)]="comentarioNuevo"></ion-input>
-    <ion-button slot="end" (click)="enviarComentario()" fill="clear">
-      <ion-icon name="send-outline"></ion-icon>
-    </ion-button>
-  </ion-item>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-input
+        placeholder="Escribe un comentario..."
+        [(ngModel)]="comentarioNuevo"
+        (keyup.enter)="enviarComentario()"
+      ></ion-input>
+
+      <ion-fab-button 
+        (click)="enviarComentario()" 
+        size="small" 
+        color="primary"
+      >
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

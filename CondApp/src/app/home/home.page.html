@@ -13,17 +13,37 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-segment [(ngModel)]="segmento">
-    <ion-segment-button value="anuncios">
-      <ion-label>Anuncios</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="mercado">
-      <ion-label>Mercado</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="reclamos">
-      <ion-label>Reclamos</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+  <ng-container *ngIf="rol === 'usuario'">
+    <ion-segment [(ngModel)]="segmento">
+      <ion-segment-button value="anuncios">
+        <ion-label>Anuncios</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="mercado">
+        <ion-label>Mercado</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="reclamos">
+        <ion-label>Reclamos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ng-container>
+  
+  <ng-container *ngIf="rol === 'admin'">
+    <ion-segment [(ngModel)]="segmento">
+      <ion-segment-button value="anuncios">
+        <ion-label>Anuncios</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="mercado">
+        <ion-label>Mercado</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="reclamos">
+        <ion-label>Reclamos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="admin">
+        <ion-label>Administrar</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ng-container>
+  
 </ion-header>
 
 <ion-content class="ion-padding">
@@ -138,6 +158,20 @@
       </svg>
     </ion-fab-button>
   </ion-fab>
+
+  <!-- ⚙️ PANEL ADMIN -->
+  <ng-container *ngIf="segmento === 'admin' && rol === 'admin'">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Panel de Administración</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+        <ion-button expand="block" color="success" (click)="irCrearAnuncio()">Crear nuevo anuncio</ion-button>
+        <ion-button expand="block" color="warning" (click)="irGestionarReclamos()">Gestionar reclamos</ion-button>
+        <ion-button expand="block" color="tertiary" (click)="irGestionarMercado()">Gestionar mercado</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
   
   
 </ion-content>

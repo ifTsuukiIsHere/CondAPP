@@ -1,13 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button (click)="goBack()" fill="clear" class="boton-flecha">
-      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24">
-        <path d="M0 0h24v24H0z" fill="none"/>
-        <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2z" fill="white"/>
-      </svg>
-    </ion-button>
-    
-    
     <ion-title>Chat Libre</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -25,11 +17,23 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-item lines="none">
-      <ion-input placeholder="Escribe tu mensaje..." [(ngModel)]="mensajeNuevo"></ion-input>
-      <ion-button slot="end" (click)="enviarMensaje()" fill="clear">
+    <ion-item lines="none" class="input-area">
+      <ion-input
+        [(ngModel)]="mensajeNuevo"
+        placeholder="Escribe tu mensaje..."
+        class="input-mensaje"
+        (keyup.enter)="enviarMensaje()"
+      ></ion-input>
+
+      <ion-fab-button 
+        (click)="enviarMensaje()" 
+        size="small" 
+        color="primary" 
+        class="btn-enviar"
+      >
         <ion-icon name="send-outline"></ion-icon>
-      </ion-button>
+      </ion-fab-button>
     </ion-item>
   </ion-toolbar>
 </ion-footer>
+

@@ -29,10 +29,11 @@ export class ChatLibrePage {
   }
 
   enviarMensaje() {
-    if (this.mensajeNuevo.trim()) {
+    const texto = this.mensajeNuevo.trim();
+    if (texto) {
       this.mensajes.push({
-        autor: 'Tú',
-        texto: this.mensajeNuevo.trim()
+        autor: 'Tú',  // Más adelante esto puede ser el nombre real del usuario logueado
+        texto: texto
       });
       this.mensajeNuevo = '';
     }

@@ -14,7 +14,10 @@ import { NavController } from '@ionic/angular';
 })
 export class HomePage {
   segmento = 'anuncios';
-
+  // 'anuncios' o 'reclamos'
+  rol: 'usuario' | 'admin' = 'admin'; // Cambia a 'admin' para ver la vista de administrador
+  // Cambia a 'admin' para ver la vista de administrador
+  // En una app real, esto vendría del servicio de autenticación o del estado global de la app.
   anuncios = [
     {
       id : 'a1',
@@ -92,5 +95,16 @@ export class HomePage {
     this.navCtrl.navigateForward('/chat-libre');
   }
   
+  irCrearAnuncio() {
+    this.navCtrl.navigateForward('/crear-anuncio');
+  }
+  
+  irGestionarReclamos() {
+    this.navCtrl.navigateForward('/gestionar-reclamos');
+  }
+  
+  irGestionarMercado() {
+    this.navCtrl.navigateForward('/gestionar-mercado');
+  }
 
 }
