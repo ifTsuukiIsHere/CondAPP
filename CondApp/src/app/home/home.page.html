@@ -48,7 +48,7 @@
 
 <ion-content class="ion-padding">
 
-  <!-- 📢 ANUNCIOS -->
+  <!-- ANUNCIOS -->
   <ng-container *ngIf="segmento === 'anuncios'">
     <ion-grid class="ion-padding-horizontal ion-margin-bottom">
       <ion-row>
@@ -98,7 +98,7 @@
     </ion-list>
   </ng-container>
 
-  <!-- 🛒 MERCADO (vacío por ahora) -->
+  <!-- MERCADO (vacío por ahora) -->
   <ng-container *ngIf="segmento === 'mercado'">
     <ion-card>
       <ion-card-content class="ion-text-center">
@@ -108,7 +108,7 @@
     </ion-card>
   </ng-container>
 
-  <!-- 📝 RECLAMOS -->
+  <!-- RECLAMOS -->
   <ng-container *ngIf="segmento === 'reclamos'">
     <ion-list>
       <ion-card *ngFor="let reclamo of reclamos">
@@ -159,7 +159,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <!-- ⚙️ PANEL ADMIN -->
+  <!-- PANEL ADMIN -->
   <ng-container *ngIf="segmento === 'admin' && rol === 'admin'">
     <ion-card>
       <ion-card-header>

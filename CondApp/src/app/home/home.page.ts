@@ -16,8 +16,7 @@ export class HomePage {
   segmento = 'anuncios';
   // 'anuncios' o 'reclamos'
   rol: 'usuario' | 'admin' = 'admin'; // Cambia a 'admin' para ver la vista de administrador
-  // Cambia a 'admin' para ver la vista de administrador
-  // En una app real, esto vendría del servicio de autenticación o del estado global de la app.
+
   anuncios = [
     {
       id : 'a1',
