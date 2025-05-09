@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController, IonContent } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { AnunciosService } from 'src/app/services/anuncios.service';
 
 @Component({
   standalone: true,
@@ -18,13 +19,34 @@ export class ComentariosPage implements OnInit {
   @ViewChild('content', { static: false }) content!: IonContent;
 
   comentarioNuevo: string = '';
-  comentarios: { autor: string, texto: string }[] = [];
+  comentarios: { autor: string, texto: string, fecha?: string }[] = [];
+  nuevoComentario: string = '';
 
-  constructor(private modalCtrl: ModalController) {}
 
-  ngOnInit(): void {
-    this.comentarios = [...this.comentariosIniciales];
+  constructor(private modalCtrl: ModalController, private anunciosService: AnunciosService) {}
+
+  ngOnInit() {
+    const anuncioId = this.item.id;
+    this.anunciosService.getComentarios(this.item.id).subscribe(coments => {
+      this.comentarios = coments as { autor: string; texto: string; fecha?: string }[];
+    });
+    
   }
+
+  agregarComentario() {
+    const texto = this.nuevoComentario.trim();
+    if (!texto) return;
+  
+    const comentario = {
+      autor: 'Yo', // puedes reemplazar con el nombre real desde auth
+      texto
+    };
+  
+    this.anunciosService.agregarComentario(this.item.id, comentario).then(() => {
+      this.nuevoComentario = '';
+    });
+  }
+  
 
   cerrar() {
     this.modalCtrl.dismiss({
@@ -32,17 +54,5 @@ export class ComentariosPage implements OnInit {
     });
   }
 
-  enviarComentario() {
-    const texto = this.comentarioNuevo.trim();
-    if (texto) {
-      this.comentarios.push({
-        autor: 'Tú',
-        texto: texto
-      });
-      this.comentarioNuevo = '';
-      setTimeout(() => {
-        this.content.scrollToBottom(300);
-      }, 100);
-    }
-  }
+  
 }

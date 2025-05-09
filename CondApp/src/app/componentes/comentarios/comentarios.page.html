@@ -16,10 +16,16 @@
   <ion-list>
     <ion-item *ngFor="let c of comentarios">
       <ion-label>
-        <strong>{{ c.autor }}:</strong>
+        <div class="comentario-header">
+          <strong>{{ c.autor }}</strong>
+          <span class="fecha-comentario" *ngIf="c.fecha">
+            {{ c.fecha | date: 'shortTime' }} - {{ c.fecha | date: 'dd/MM' }}
+          </span>
+        </div>
         <p>{{ c.texto }}</p>
       </ion-label>
     </ion-item>
+    
   </ion-list>
 </ion-content>
 
@@ -28,12 +34,12 @@
     <ion-item lines="none">
       <ion-input
         placeholder="Escribe un comentario..."
-        [(ngModel)]="comentarioNuevo"
-        (keyup.enter)="enviarComentario()"
+        [(ngModel)]="nuevoComentario"
+        (keyup.enter)="agregarComentario()"
       ></ion-input>
 
       <ion-fab-button 
-        (click)="enviarComentario()" 
+        (click)="agregarComentario()" 
         size="small" 
         color="primary"
       >

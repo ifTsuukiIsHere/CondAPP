@@ -1,16 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>XXXXX</ion-title>
-    <ion-buttons slot="start">
-      <ion-button>
-        <ion-icon slot="icon-only" name="people-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title>CondAPP</ion-title>
   </ion-toolbar>
 
   <ng-container *ngIf="rol === 'usuario'">
@@ -46,26 +36,27 @@
   
 </ion-header>
 
+<ion-popover trigger="perfilBtn" triggerAction="click" size="auto">
+  <ion-content class="ion-padding">
+    <ion-list>
+      <ion-item button (click)="modificarPerfil()">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        <ion-label>Modificar perfil</ion-label>
+      </ion-item>
+      <ion-item button (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-popover>
+
 <ion-content class="ion-padding">
 
   <!-- ANUNCIOS -->
   <ng-container *ngIf="segmento === 'anuncios'">
-    <ion-grid class="ion-padding-horizontal ion-margin-bottom">
-      <ion-row>
-        <ion-col size="4">
-          <ion-button expand="block" fill="outline" shape="round">Más reciente</ion-button>
-        </ion-col>
-        <ion-col size="4">
-          <ion-button expand="block" fill="outline" shape="round">Semana</ion-button>
-        </ion-col>
-        <ion-col size="4">
-          <ion-button expand="block" fill="outline" shape="round">Mes</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <ion-list>
-      <ion-card *ngFor="let anuncio of anuncios">
+    <ng-container *ngIf="anuncios$ | async as anuncios">
+      <ion-card *ngFor="let anuncio of anuncios" class="anuncio-card">
         <ion-card-header>
           <ion-item lines="none">
             <ion-avatar slot="start">
@@ -73,30 +64,33 @@
             </ion-avatar>
             <ion-label>
               <h3>{{ anuncio.autor }} - {{ anuncio.rol }}</h3>
-              <p>{{ anuncio.casa }} · {{ anuncio.fecha }}</p>
+              <p>{{ anuncio.casa }} · {{ anuncio.fecha | date:'shortDate' }}</p>
             </ion-label>
           </ion-item>
         </ion-card-header>
-
+  
         <ion-card-content>
-          <pre style="white-space: pre-wrap;">{{ anuncio.mensaje }}</pre>
+          <div class="mensaje-dinamico">
+            {{ anuncio.mensaje }}
+          </div>
         </ion-card-content>
-
-        <ion-card-content class="ion-text-right">
+  
+        <ion-card-content class="ion-text-right botones-acciones">
           <ion-button fill="clear" size="small" (click)="onComentar('anuncio', anuncio)">
             <i class="bi bi-chat"></i>
           </ion-button>
           <ion-button fill="clear" size="small" (click)="onLike('anuncio', anuncio)">
             <i class="bi bi-heart"></i>
+            <span style="margin-left: 4px;">{{ anuncio.likes || 0 }}</span>
           </ion-button>
           <ion-button fill="clear" size="small" (click)="onCompartir('anuncio', anuncio)">
             <i class="bi bi-share"></i>
           </ion-button>
         </ion-card-content>
-        
       </ion-card>
-    </ion-list>
+    </ng-container>
   </ng-container>
+  
 
   <!-- MERCADO (vacío por ahora) -->
   <ng-container *ngIf="segmento === 'mercado'">
@@ -158,7 +152,13 @@
       </svg>
     </ion-fab-button>
   </ion-fab>
-
+  
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="medium" (click)="mostrarMenuPerfil()">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
   <!-- PANEL ADMIN -->
   <ng-container *ngIf="segmento === 'admin' && rol === 'admin'">
     <ion-card>
@@ -172,6 +172,7 @@
       </ion-card-content>
     </ion-card>
   </ng-container>
+  
   
   
 </ion-content>

@@ -1,0 +1,3 @@
+Email: vecino@condapp.cl  Pass: 123456
+Email: admin@condapp.cl	Pass: 123456
+	
