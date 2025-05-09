@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, ModalController, NavController, ActionSheetController } from '@ionic/angular';
+import { IonicModule, ModalController, NavController, ActionSheetController,AlertController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
-
+import { deleteDoc, doc,Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../services/auth.service';
 import { AnunciosService } from '../services/anuncios.service';
+
 
 @Component({
   standalone: true,
@@ -48,7 +49,9 @@ export class HomePage implements OnInit {
     private navCtrl: NavController,
     private authService: AuthService,
     private actionSheetCtrl: ActionSheetController,
-    private anunciosService: AnunciosService
+    private anunciosService: AnunciosService,
+    private firestore: Firestore,
+    private alertCtrl: AlertController 
   ) {}
 
   ngOnInit() {
@@ -153,5 +156,51 @@ export class HomePage implements OnInit {
     console.warn('¡Botón de pánico activado! (pendiente de implementar)');
   }
 
+  async editarAnuncio(anuncio: any) {
+    const { EditarAnuncioComponent } = await import('../componentes/editar-anuncio/editar-anuncio.component');
+  
+    const modal = await this.modalCtrl.create({
+      component: EditarAnuncioComponent,
+      componentProps: {
+        anuncio
+      }
+    });
+  
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        console.log('✅ Anuncio editado con éxito');
+        // Aquí podrías volver a cargar anuncios si lo necesitas
+      }
+    });
+  
+    await modal.present();
+  }
+  
+  
+  async eliminarAnuncio(anuncioId: string) {
+    const alerta = await this.alertCtrl.create({
+      header: '¿Eliminar anuncio?',
+      message: 'Esta acción no se puede deshacer.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'alert-cancel'
+        },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: () => {
+            const docRef = doc(this.firestore, 'anuncios', anuncioId);
+            deleteDoc(docRef)
+              .then(() => console.log('✅ Anuncio eliminado'))
+              .catch(err => console.error('❌ Error al eliminar:', err));
+          }
+        }
+      ]
+    });
+  
+    await alerta.present();
+  }
   
 }
