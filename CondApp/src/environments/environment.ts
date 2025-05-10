@@ -7,7 +7,7 @@ import { initializeApp } from "firebase/app";
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyBYppQu7Bc0egxIdqwxJxRF1ITu6OIsdMM",
+    apiKey: "AIzaSyB0YppQu7Bc0egxIdqwxJxRF1ITu6OIsdMM",
     authDomain: "condapp-ff394.firebaseapp.com",
     projectId: "condapp-ff394",
     storageBucket: "condapp-ff394.firebasestorage.app",

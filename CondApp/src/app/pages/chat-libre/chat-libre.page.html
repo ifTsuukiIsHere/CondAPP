@@ -1,23 +1,26 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" (click)="goBack()"></ion-back-button>
+    </ion-buttons>
     <ion-title>Chat Libre</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item *ngFor="let msg of mensajes">
-      <ion-label>
-        <strong>{{ msg.autor }}</strong>
-        <p>{{ msg.texto }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+<ion-content class="ion-padding chat-container">
+  <div *ngFor="let msg of mensajes" 
+       [class.message-sent]="msg.autor === 'Tú'"
+       [class.message-received]="msg.autor !== 'Tú'" 
+       class="message-bubble">
+    <div class="message-author">{{ msg.autor }}</div>
+    <div class="message-text">{{ msg.texto }}</div>
+    <div class="message-time">{{ formatearHora(msg.hora) }}</div>
+  </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-item lines="none" class="input-area">
+    <div class="input-container">
       <ion-input
         [(ngModel)]="mensajeNuevo"
         placeholder="Escribe tu mensaje..."
@@ -25,15 +28,16 @@
         (keyup.enter)="enviarMensaje()"
       ></ion-input>
 
-      <ion-fab-button 
+      <ion-button 
         (click)="enviarMensaje()" 
-        size="small" 
-        color="primary" 
         class="btn-enviar"
+        fill="solid" 
+        shape="round"
       >
-        <ion-icon name="send-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-item>
+        <svg slot="icon-only" viewBox="0 0 24 24" class="send-icon">
+          <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-footer>
-

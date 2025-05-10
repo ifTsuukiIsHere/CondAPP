@@ -1,29 +1,53 @@
-.boton-cerrar {
-    padding: 0;
-    min-width: auto;
-    height: auto;
-  
-    svg {
-      width: 24px;
-      height: 24px;
-      display: block;
-    }
-  
-    ion-ripple-effect {
-      display: none;
-    }
-  }
-  .comentario-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .fecha-comentario {
-    font-size: 12px;
-    color: gray;
-    white-space: nowrap;
-  }
+.comentarios-container {
+  background: #f0f2f5;
+  color: hsl(0, 0%, 20%);
+}
 
-  
-  
+.comentario-item {
+  background: hsl(0, 0%, 20%);; /* celeste claro, similar al chat */
+  border-radius: 12px;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.comentario-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.input-mensaje {
+  flex: 1;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  background: rgb(66, 66, 66);
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  height: 40px;
+  padding-left: 12px;
+}
+
+.btn-enviar {
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-icon {
+  width: 20px;
+  height: 20px;
+}

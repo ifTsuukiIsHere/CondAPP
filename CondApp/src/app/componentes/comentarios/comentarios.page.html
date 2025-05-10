@@ -1,20 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Comentarios</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="cerrar()" fill="clear" class="boton-cerrar">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-          <path d="M0 0h24v24H0z" fill="none"/>
-          <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 0 0-1.41 1.41L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z" fill="white"/>
-        </svg>
-      </ion-button>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" (click)="cerrar()"></ion-back-button>
     </ion-buttons>
+    <ion-title>Comentarios</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content #content class="ion-padding">
+<ion-content class="ion-padding comentarios-container">
   <ion-list>
-    <ion-item *ngFor="let c of comentarios">
+    <ion-item *ngFor="let c of comentarios" lines="none" class="comentario-item">
       <ion-label>
         <div class="comentario-header">
           <strong>{{ c.autor }}</strong>
@@ -25,26 +20,29 @@
         <p>{{ c.texto }}</p>
       </ion-label>
     </ion-item>
-    
   </ion-list>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-item lines="none">
+    <div class="input-container">
       <ion-input
-        placeholder="Escribe un comentario..."
         [(ngModel)]="nuevoComentario"
+        placeholder="Escribe un comentario..."
+        class="input-mensaje"
         (keyup.enter)="agregarComentario()"
       ></ion-input>
 
-      <ion-fab-button 
+      <ion-button 
         (click)="agregarComentario()" 
-        size="small" 
-        color="primary"
+        class="btn-enviar"
+        fill="solid" 
+        shape="round"
       >
-        <ion-icon name="send-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-item>
+        <svg slot="icon-only" viewBox="0 0 24 24" class="send-icon">
+          <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-footer>

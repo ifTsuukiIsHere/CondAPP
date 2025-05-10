@@ -1,26 +1,130 @@
-.boton-flecha {
-    padding: 0;
-    min-width: auto;
-    height: auto;
+/* Botón de retroceso */
+ion-back-button {
+  --color: #ffffff;
+  --icon-font-size: 24px;
+}
+
+/* Contenedor del chat */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 12px;
+}
+
+/* Burbujas de mensaje base */
+.message-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  position: relative;
+  line-height: 1.4;
   
-    svg {
-      display: block;
-      width: 24px;
-      height: 24px;
-    }
-  
-    ion-ripple-effect {
-      display: none; // elimina el efecto de onda
-    }
+  .message-author {
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    display: block;
   }
   
-  .input-area {
-    align-items: center;
+  .message-text {
+    font-size: 1rem;
+    word-wrap: break-word;
   }
   
-  .btn-enviar {
-    margin-left: 8px;
-    width: 48px;
-    height: 48px;
+  .message-time {
+    font-size: 0.75rem;
+    text-align: right;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+}
+
+/* Mensajes recibidos */
+.message-received {
+  align-self: flex-start;
+  background: var(--ion-color-light);
+  border-bottom-left-radius: 4px;
+  color: var(--ion-color-dark);
+  
+  .message-author {
+    color: var(--ion-color-primary);
   }
   
+  .message-time {
+    color: var(--ion-color-medium);
+  }
+}
+
+/* Mensajes enviados */
+.message-sent {
+  align-self: flex-end;
+  background: var(--ion-color-primary);
+  color: white;
+  border-bottom-right-radius: 4px;
+  
+  .message-time {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Estructura principal del input (estilos originales conservados) */
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  width: 100%;
+}
+
+/* Input mejorado (estilos originales conservados) */
+.input-mensaje {
+  flex: 1;
+  margin-right: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --background: rgba(var(--ion-color-primary-rgb), 0.1);
+  --border-radius: 24px;
+  --color: var(--ion-color-dark);
+}
+
+/* Botón de enviar con SVG (estilos originales conservados) */
+.btn-enviar {
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  --background: var(--ion-color-primary);
+  --border-radius: 50%;
+  --box-shadow: none;
+  position: relative;
+  
+  .send-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    fill: white;
+    transition: all 0.2s ease;
+  }
+
+  &:active .send-icon {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  &:hover {
+    --background: var(--ion-color-primary-shade);
+  }
+}
+
+/* Ajustes para el footer (estilos originales conservados) */
+ion-footer ion-toolbar {
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --padding-start: 0;
+  --padding-end: 0;
+  --background: var(--ion-color-light);
+  --border-radius: 0;
+}
