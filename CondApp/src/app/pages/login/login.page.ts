@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -25,20 +24,25 @@ export class LoginPage {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
-  }  
-  
-  onLogin() {
+  }
+
+  async onLogin() {
+    this.error = null;
+
+    if (this.loginForm.invalid) {
+      this.error = 'Por favor completa todos los campos correctamente.';
+      return;
+    }
+
     const { email, password } = this.loginForm.value;
-  
-    this.authService.login(email, password)
-    .then(({ rol }) => {
+
+    try {
+      const { rol } = await this.authService.login(email, password);
       console.log('Login exitoso con rol:', rol);
       this.navCtrl.navigateRoot('/home');
-    })
-    .catch((error) => {
-      console.error('Error al iniciar sesión:', error);
-      this.error = 'Correo o contraseña incorrectos';
-    });
+    } catch (err) {
+      console.error('Error al iniciar sesión:', err);
+      this.error = 'Correo o contraseña incorrectos o usuario sin datos.';
+    }
   }
-  
 }
