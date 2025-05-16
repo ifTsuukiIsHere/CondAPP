@@ -126,3 +126,98 @@ ion-button[color="danger"] {
 .alert-cancel {
   color: #999;
 }
+ion-card img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 260px;
+  border-radius: 12px;
+  object-fit: contain;
+  transition: transform 0.3s ease-in-out;
+}
+
+
+ion-card img:hover {
+  transform: scale(1.015);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+.producto-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+}
+
+.producto-horizontal img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.producto-info {
+  flex: 1;
+  text-align: left;
+}
+
+.producto-info h2 {
+  font-size: 1.1rem;
+  margin: 0 0 4px;
+}
+
+.producto-info p {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin: 0;
+}
+.imagen-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* fondo oscuro translúcido */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.imagen-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.5s ease;
+}
+
+.imagen-modal:hover img {
+  transform: scale(1.02);
+  cursor: zoom-out;
+}
+.d-flex {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.contacto-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.icono-whatsapp {
+  width: 16px!important;
+  height: 16px!important;
+  margin-right: 6px;
+  margin-left: -10px;
+  object-fit: contain;
+  vertical-align: middle;
+}

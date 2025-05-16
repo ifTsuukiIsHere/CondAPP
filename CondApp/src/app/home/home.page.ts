@@ -7,7 +7,6 @@ import { deleteDoc, doc,Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../services/auth.service';
 import { AnunciosService } from '../services/anuncios.service';
 
-
 @Component({
   standalone: true,
   selector: 'app-home',
@@ -20,6 +19,42 @@ export class HomePage implements OnInit {
   rol!: 'usuario' | 'admin';
 
   anuncios$: Observable<any[]> | null = null;
+  // Productos para la sección "Mercado"
+  productos = [
+    {
+      id: 'p1',
+      nombre: 'Parrilla portátil',
+      descripcion: 'Ideal para asados en el patio. Poco uso. Precio conversable.',
+      usuario: 'Marcelo Fuentes',
+      casa: 'Casa 14',
+      fecha: new Date(),
+      imagenUrl: './assets/img/parr.png',
+      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Marcelo Fuentes')}`,
+      whatsapp: '56911112222'
+    },
+    {
+      id: 'p2',
+      nombre: 'Bicicleta Oxford Himalaya',
+      descripcion: 'Bicicleta en buen estado para adultos. $150.000.',
+      usuario: 'Verónica Ruiz',
+      casa: 'Casa 9',
+      fecha: new Date(),
+      imagenUrl: './assets/img/Bici.png',
+      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Verónica Ruiz')}`,
+      whatsapp: '56933334444'
+    },
+    {
+      id: 'p3',
+      nombre: 'Cuna de bebé',
+      descripcion: 'Cuna en excelente estado con colchón incluido. Precio x inbox!!!!',
+      usuario: 'Pedro Salazar',
+      casa: 'Casa 6',
+      fecha: new Date(),
+      imagenUrl: './assets/img/Cuna.png',
+      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Pedro Salazar')}`,
+      whatsapp: '56955556666'
+    }
+  ];
 
 
   reclamos = [
@@ -202,5 +237,17 @@ export class HomePage implements OnInit {
   
     await alerta.present();
   }
-  
+imagenSeleccionada: string | null = null;
+
+abrirImagen(url: string) {
+  this.imagenSeleccionada = url;
+}
+
+cerrarImagen() {
+  this.imagenSeleccionada = null;
+}
+encodeURI(texto: string): string {
+  return encodeURIComponent(texto);
+}
+
 }

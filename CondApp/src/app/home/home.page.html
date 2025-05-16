@@ -16,7 +16,7 @@
       </ion-segment-button>
     </ion-segment>
   </ng-container>
-  
+
   <ng-container *ngIf="rol === 'admin'">
     <ion-segment [(ngModel)]="segmento">
       <ion-segment-button value="anuncios">
@@ -33,7 +33,7 @@
       </ion-segment-button>
     </ion-segment>
   </ng-container>
-  
+
 </ion-header>
 
 <ion-popover trigger="perfilBtn" triggerAction="click" size="auto">
@@ -61,14 +61,14 @@
           <ion-button fill="clear" color="warning" size="small" (click)="editarAnuncio(anuncio)">
             <i class="bi bi-pencil-fill"></i>
           </ion-button>
-          
+
           <ion-button fill="clear" color="danger" size="small" (click)="eliminarAnuncio(anuncio.id)">
             <i class="bi bi-trash3-fill"></i>
           </ion-button>
-          
-          
+
+
         </ion-card-content>
-        
+
         <ion-card-header>
           <ion-item lines="none">
             <ion-avatar slot="start">
@@ -80,15 +80,15 @@
             </ion-label>
           </ion-item>
         </ion-card-header>
-  
+
         <ion-card-content>
           <h2 class="titulo-anuncio">{{ anuncio.titulo }}</h2>
           <div class="mensaje-dinamico">
             {{ anuncio.mensaje }}
           </div>
         </ion-card-content>
-        
-  
+
+
         <ion-card-content class="ion-text-right botones-acciones">
           <ion-button fill="clear" size="small" (click)="onComentar('anuncio', anuncio)">
             <i class="bi bi-chat"></i>
@@ -104,17 +104,53 @@
       </ion-card>
     </ng-container>
   </ng-container>
+
+
+  <!-- MERCADO -->
+  <ng-container *ngIf="segmento === 'mercado'">
+    <ion-card *ngFor="let producto of productos" class="producto-card">
+      <ion-card-header>
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img [src]="producto.avatarUrl" />
+          </ion-avatar>
+          <ion-label>
+            <h3>{{ producto.usuario }}</h3>
+            <p>{{ producto.casa }} · {{ producto.fecha | date:'shortDate' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+
+      <!-- CONTENIDO HORIZONTAL -->
+      <ion-card-content class="producto-horizontal">
+        <img [src]="producto.imagenUrl" alt="Imagen del producto" (click)="abrirImagen(producto.imagenUrl)"
+          class="click-animada" />
+        <div class="producto-info">
+          <h2>{{ producto.nombre }}</h2>
+          <p>{{ producto.descripcion }}</p>
+        </div>
+      </ion-card-content>
+
+<ion-card-content class="ion-text-right">
+  <ion-button
+    fill="outline"
+    color="success"
+    size="small"
+    [href]="'https://wa.me/' + producto.whatsapp + '?text=' + encodeURI('¡Hola! Estoy interesad@ en ' + producto.nombre + ' que publicaste en la aplicación CondAPP. Quisiera saber más información.')"
+    target="_blank"
+  >
+    <img src="assets/img/whatsapp-svgrepo-com.svg" alt="WhatsApp" class="icono-whatsapp" />
+    Contactar
+  </ion-button>
+</ion-card-content>
+    </ion-card>
+
+    <div class="imagen-modal" *ngIf="imagenSeleccionada" (click)="cerrarImagen()">
+      <img [src]="imagenSeleccionada" class="zoom-in" />
+    </div>
+  </ng-container>
   
 
-  <!-- MERCADO (vacío por ahora) -->
-  <ng-container *ngIf="segmento === 'mercado'">
-    <ion-card>
-      <ion-card-content class="ion-text-center">
-        <ion-icon name="construct-outline" size="large"></ion-icon>
-        <p>Sección en construcción...</p>
-      </ion-card-content>
-    </ion-card>
-  </ng-container>
 
   <!-- RECLAMOS -->
   <ng-container *ngIf="segmento === 'reclamos'">
@@ -135,7 +171,7 @@
         <ion-card-content>
           <p style="white-space: pre-wrap;">{{ reclamo.mensaje }}</p>
         </ion-card-content>
-        
+
         <ion-card-content class="ion-text-right">
           <ion-button fill="clear" size="small">
             <ion-icon name="flag-outline" slot="icon-only"></ion-icon>
@@ -145,7 +181,7 @@
         <ion-card-content class="ion-text-right">
           <ion-button fill="clear" size="small" (click)="onComentar('reclamo', reclamo)">
             <i class="bi bi-chat"></i>
-          </ion-button>          
+          </ion-button>
           <ion-button fill="clear" size="small" (click)="onLike('reclamo', reclamo)">
             <i class="bi bi-heart"></i>
           </ion-button>
@@ -153,26 +189,27 @@
             <i class="bi bi-share"></i>
           </ion-button>
         </ion-card-content>
-        
-        
+
+
       </ion-card>
     </ion-list>
-    
+
   </ng-container>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="primary" class="fab-chat" (click)="abrirChatLibre()">
       <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 512 512">
-        <path fill="white" d="M408 96H104c-13.3 0-24 10.7-24 24v192c0 13.3 10.7 24 24 24h72v56c0 4.4 5.3 6.7 8.4 3.6L270 336h138c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24z"/>
+        <path fill="white"
+          d="M408 96H104c-13.3 0-24 10.7-24 24v192c0 13.3 10.7 24 24 24h72v56c0 4.4 5.3 6.7 8.4 3.6L270 336h138c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24z" />
       </svg>
     </ion-fab-button>
   </ion-fab>
-  
+
   <ion-fab vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button color="medium" (click)="mostrarMenuPerfil()">
       <ion-icon name="person-circle-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  
+
   <!-- PANEL ADMIN -->
   <ng-container *ngIf="segmento === 'admin' && rol === 'admin'">
     <ion-card>
@@ -186,7 +223,7 @@
       </ion-card-content>
     </ion-card>
   </ng-container>
-  
-  
-  
+
+
+
 </ion-content>
