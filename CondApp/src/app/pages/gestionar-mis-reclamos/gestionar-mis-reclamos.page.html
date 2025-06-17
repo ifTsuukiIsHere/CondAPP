@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mis Reclamos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let reclamo of reclamos">
+      <ion-label>
+        <h3>{{ reclamo.autor }}</h3>
+        <p>{{ reclamo.casa }} · {{ reclamo.fecha }}</p>
+        <p style="white-space: pre-wrap;">{{ reclamo.mensaje }}</p>
+        <p><strong>Estado:</strong> {{ reclamo.estado | uppercase }}</p>
+      </ion-label>
+      <ion-button fill="clear" color="danger" size="small" (click)="eliminarReclamo(reclamo.id)">
+        <i class="bi bi-trash3-fill"></i>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="primary" (click)="volver()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

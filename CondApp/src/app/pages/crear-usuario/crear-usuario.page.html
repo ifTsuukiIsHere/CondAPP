@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear Usuario</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="usuarioForm" (ngSubmit)="crearUsuario()">
+    <ion-item>
+      <ion-label position="floating">RUT</ion-label>
+      <ion-input formControlName="rut"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nombre completo</ion-label>
+      <ion-input formControlName="nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Celular</ion-label>
+      <ion-input formControlName="celular"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nº de Casa</ion-label>
+      <ion-input formControlName="casa"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input type="email" formControlName="correo"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" [disabled]="usuarioForm.invalid">
+      Crear Usuario
+    </ion-button>
+
+    <ion-button expand="block" fill="outline" color="medium" (click)="cancelar()">
+      Cancelar
+    </ion-button>
+  </form>
+</ion-content>

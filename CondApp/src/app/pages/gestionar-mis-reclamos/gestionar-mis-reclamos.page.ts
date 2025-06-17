@@ -1,43 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, AlertController, PopoverController } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { ReclamosService } from 'src/app/services/reclamos.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { Firestore, doc, deleteDoc } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
-  selector: 'app-gestionar-reclamos',
-  templateUrl: './gestionar-reclamos.page.html',
-  styleUrls: ['./gestionar-reclamos.page.scss'],
+  selector: 'app-gestionar-mis-reclamos',
+  templateUrl: './gestionar-mis-reclamos.page.html',
+  styleUrls: ['./gestionar-mis-reclamos.page.scss'],
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class GestionarReclamosPage implements OnInit {
+export class GestionarMisReclamosPage implements OnInit {
   reclamos: any[] = [];
-  filtroEstado = '';
 
   constructor(
-    private reclamosService: ReclamosService, 
-    public authService: AuthService,
+    private reclamosService: ReclamosService,
+    private authService: AuthService,
     private alertController: AlertController,
-    private popoverController: PopoverController,
-    private firestore: Firestore
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.reclamosService.getReclamos().subscribe(datos => {
-      this.reclamos = datos;
-    });
+    this.cargarReclamosUsuario();
   }
 
-  get reclamosFiltrados() {
-    if (!this.filtroEstado) return this.reclamos;
-    return this.reclamos.filter(r => r.estado === this.filtroEstado);
-  }
-
-  cambiarEstado(reclamo: any, nuevoEstado: string) {
-    this.reclamosService.actualizarEstado(reclamo.id, nuevoEstado, this.authService.getUID());
+  async cargarReclamosUsuario() {
+    try {
+      const userId = this.authService.getUID();
+      const reclamos$ = this.reclamosService.getReclamos();
+      reclamos$.subscribe(reclamos => {
+        this.reclamos = reclamos.filter(r => r.userId === userId);
+      });
+    } catch (error) {
+      console.error('Error al cargar reclamos:', error);
+    }
   }
 
   async eliminarReclamo(reclamoId: string) {
@@ -55,14 +54,9 @@ export class GestionarReclamosPage implements OnInit {
           role: 'destructive',
           handler: async () => {
             try {
-              // Obtener el rol del usuario actual
-              const userRol = this.authService.getRol();
-              // Obtener el ID del usuario
               const userId = this.authService.getUID();
-              
-              // Usar el servicio de reclamos para eliminar
+              const userRol = this.authService.getRol();
               await this.reclamosService.eliminarReclamo(reclamoId, userId, userRol);
-              
               // Actualizar la lista local
               this.reclamos = this.reclamos.filter(r => r.id !== reclamoId);
               console.log('✅ Reclamo eliminado');
@@ -81,5 +75,9 @@ export class GestionarReclamosPage implements OnInit {
     });
 
     await alerta.present();
+  }
+
+  volver() {
+    this.router.navigate(['/home']);
   }
 }

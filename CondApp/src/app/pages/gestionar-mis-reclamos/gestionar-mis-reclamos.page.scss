@@ -1,0 +1,21 @@
+:host {
+  ion-content {
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+  }
+
+  ion-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+
+  ion-fab-button {
+    --background: var(--ion-color-primary);
+    --background-activated: var(--ion-color-primary-tint);
+  }
+
+  ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+}

@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { deleteDoc, doc,Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../services/auth.service';
 import { AnunciosService } from '../services/anuncios.service';
+import { ReclamosService } from '../services/reclamos.service';
+import { ProductosService } from '../services/productos.service';
 
 @Component({
   standalone: true,
@@ -19,62 +21,12 @@ export class HomePage implements OnInit {
   rol!: 'usuario' | 'admin';
 
   anuncios$: Observable<any[]> | null = null;
-  // Productos para la sección "Mercado"
-  productos = [
-    {
-      id: 'p1',
-      nombre: 'Parrilla portátil',
-      descripcion: 'Ideal para asados en el patio. Poco uso. Precio conversable.',
-      usuario: 'Marcelo Fuentes',
-      casa: 'Casa 14',
-      fecha: new Date(),
-      imagenUrl: './assets/img/parr.png',
-      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Marcelo Fuentes')}`,
-      whatsapp: '56911112222'
-    },
-    {
-      id: 'p2',
-      nombre: 'Bicicleta Oxford Himalaya',
-      descripcion: 'Bicicleta en buen estado para adultos. $150.000.',
-      usuario: 'Verónica Ruiz',
-      casa: 'Casa 9',
-      fecha: new Date(),
-      imagenUrl: './assets/img/Bici.png',
-      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Verónica Ruiz')}`,
-      whatsapp: '56933334444'
-    },
-    {
-      id: 'p3',
-      nombre: 'Cuna de bebé',
-      descripcion: 'Cuna en excelente estado con colchón incluido. Precio x inbox!!!!',
-      usuario: 'Pedro Salazar',
-      casa: 'Casa 6',
-      fecha: new Date(),
-      imagenUrl: './assets/img/Cuna.png',
-      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Pedro Salazar')}`,
-      whatsapp: '56955556666'
-    }
-  ];
+
+  productos$: Observable<any[]> | null = null;
 
 
-  reclamos = [
-    {
-      id: 'r1',
-      autor: 'Ana Torres',
-      casa: 'Casa 5',
-      fecha: 'Abril 12',
-      mensaje: 'Hace una semana que hay una luz del pasillo que no funciona.',
-      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Ana Torres')}`,
-    },
-    {
-      id: 'r2',
-      autor: 'Luis Pino',
-      casa: 'Casa 17',
-      fecha: 'Abril 11',
-      mensaje: 'Vecinos dejando basura fuera de horario. Pido más fiscalización.',
-      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Luis Pino')}`,
-    }
-  ];
+  reclamos: any[] = [];
+  reclamosPendientesCount = 0;
 
   comentariosMap: { [id: string]: { autor: string, texto: string }[] } = {};
 
@@ -82,30 +34,43 @@ export class HomePage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-    private authService: AuthService,
+    public authService: AuthService,  // Cambiado a público para usarlo en la plantilla
     private actionSheetCtrl: ActionSheetController,
     private anunciosService: AnunciosService,
+    private reclamosService: ReclamosService,
+    private productosService: ProductosService,
     private firestore: Firestore,
-    private alertCtrl: AlertController 
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
     this.rol = this.authService.getRol() as 'usuario' | 'admin';
     console.log('Rol actual:', this.rol);
     this.anuncios$ = this.anunciosService.getAnuncios();
+    this.productos$ = this.productosService.getProductos();
+    this.reclamosService.getReclamos().subscribe(datos => {
+      this.reclamos = datos;
+      this.reclamosPendientesCount = datos.filter(d => d.estado === 'pendiente' || d.estado === 'nuevo').length;
+    });
   }
 
-  onLike(tipo: 'anuncio' | 'reclamo', item: any) {
+  onLike(tipo: 'anuncio' | 'reclamo' | 'producto', item: any) {
+    const uid = this.authService.getUID();
     if (tipo === 'anuncio') {
-      const uid = this.authService.getUID();
       this.anunciosService.darLike(item.id, uid).then(() => {
         console.log('👍 Like guardado para anuncio', item.id);
       });
+    } else if (tipo === 'reclamo') {
+      this.reclamosService.darLike(item.id, uid).then(() => {
+        console.log('👍 Like guardado para reclamo', item.id);
+      });
+    } else {
+      console.log('👍 Like para producto', item.id);
     }
   }
-  
-  
-  async onComentar(tipo: 'anuncio' | 'reclamo', item: any) {
+
+
+  async onComentar(tipo: 'anuncio' | 'reclamo' | 'producto', item: any) {
     const { ComentariosPage } = await import('../componentes/comentarios/comentarios.page');
     const id = item.id;
     const comentarios = this.comentariosMap[id] || [];
@@ -142,12 +107,24 @@ export class HomePage implements OnInit {
     this.navCtrl.navigateForward('/crear-anuncio');
   }
 
+  irCrearReclamo() {
+    this.navCtrl.navigateForward('/crear-reclamo');
+  }
+
+  irCrearProducto() {
+    this.navCtrl.navigateForward('/crear-producto');
+  }
+
+  irGestionarMisReclamos() {
+    this.navCtrl.navigateForward('/gestionar-mis-reclamos');
+  }
+
   irGestionarReclamos() {
     this.navCtrl.navigateForward('/gestionar-reclamos');
   }
 
-  irGestionarMercado() {
-    this.navCtrl.navigateForward('/gestionar-mercado');
+  irCrearUsuario() {
+    this.navCtrl.navigateForward('/crear-usuario');
   }
 
   async mostrarMenuPerfil() {
@@ -189,6 +166,39 @@ export class HomePage implements OnInit {
 
   botonPanico() {
     console.warn('¡Botón de pánico activado! (pendiente de implementar)');
+  }
+
+  async eliminarProducto(producto: any) {
+    const alerta = await this.alertCtrl.create({
+      header: '¿Eliminar producto?',
+      message: 'Esta acción no se puede deshacer.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'alert-cancel'
+        },
+        {
+          text: 'Eliminar',
+          handler: async () => {
+            try {
+              await this.productosService.eliminarProducto(producto.id);
+              console.log('Producto eliminado correctamente');
+            } catch (error) {
+              console.error('Error al eliminar el producto:', error);
+              const errorAlerta = await this.alertCtrl.create({
+                header: 'Error',
+                message: 'No se pudo eliminar el producto. Por favor, inténtalo de nuevo.',
+                buttons: ['Aceptar']
+              });
+              await errorAlerta.present();
+            }
+          }
+        }
+      ]
+    });
+
+    await alerta.present();
   }
 
   async editarAnuncio(anuncio: any) {

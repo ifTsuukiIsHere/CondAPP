@@ -1,0 +1,21 @@
+/* Estilos básicos para creación de productos */
+
+/* Estilos específicos para la página de crear producto */
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 0.8em;
+  margin-top: 4px;
+}
+
+.imagen-preview {
+  margin: 16px 0;
+  text-align: center;
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}

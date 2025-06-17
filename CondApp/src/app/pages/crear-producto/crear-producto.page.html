@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear Producto</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="productoForm" (ngSubmit)="guardar()">
+    <!-- Sección de imagen -->
+    <div class="ion-margin-bottom">
+      <ion-item>
+        <ion-label position="floating">Imagen (Opcional)</ion-label>
+        <ion-button fill="clear" (click)="seleccionarImagen()" slot="end">
+          <ion-icon name="image" slot="icon-only"></ion-icon>
+          Seleccionar imagen
+        </ion-button>
+      </ion-item>
+
+      <!-- Vista previa de la imagen -->
+      <div *ngIf="imagenPreview" class="imagen-preview ion-margin-bottom">
+        <img [src]="imagenPreview" alt="Vista previa">
+      </div>
+
+      <!-- Input oculto para selección de archivos -->
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none;" />
+    </div>
+
+    <!-- Sección de información básica -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información Básica</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input formControlName="nombre"></ion-input>
+          <div *ngIf="productoForm.get('nombre')?.touched && productoForm.get('nombre')?.invalid" class="error-message">
+            <div *ngIf="productoForm.get('nombre')?.errors?.['required']">
+              El nombre es requerido
+            </div>
+            <div *ngIf="productoForm.get('nombre')?.errors?.['minlength']">
+              El nombre debe tener al menos 3 caracteres
+            </div>
+            <div *ngIf="productoForm.get('nombre')?.errors?.['maxlength']">
+              El nombre no puede tener más de 50 caracteres
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-textarea formControlName="descripcion" autoGrow="true" rows="3"></ion-textarea>
+          <div *ngIf="productoForm.get('descripcion')?.touched && productoForm.get('descripcion')?.invalid" class="error-message">
+            <div *ngIf="productoForm.get('descripcion')?.errors?.['required']">
+              La descripción es requerida
+            </div>
+            <div *ngIf="productoForm.get('descripcion')?.errors?.['minlength']">
+              La descripción debe tener al menos 10 caracteres
+            </div>
+            <div *ngIf="productoForm.get('descripcion')?.errors?.['maxlength']">
+              La descripción no puede tener más de 500 caracteres
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Precio (CLP)</ion-label>
+          <ion-input formControlName="precio" type="number" placeholder="Ej: 10000 para $10.000"></ion-input>
+          <div *ngIf="productoForm.get('precio')?.touched && productoForm.get('precio')?.invalid" class="error-message">
+            <div *ngIf="productoForm.get('precio')?.errors?.['required']">
+              El precio es requerido
+            </div>
+            <div *ngIf="productoForm.get('precio')?.errors?.['pattern']">
+              El precio debe ser un número válido
+            </div>
+          </div>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botones de acción -->
+    <div class="ion-margin-top">
+      <ion-button expand="block" type="submit" [disabled]="productoForm.invalid">
+        <ion-icon name="send" slot="start"></ion-icon>
+        Publicar Producto
+      </ion-button>
+
+      <ion-button expand="block" fill="outline" color="medium" (click)="cancelar()">
+        <ion-icon name="close" slot="start"></ion-icon>
+        Cancelar
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

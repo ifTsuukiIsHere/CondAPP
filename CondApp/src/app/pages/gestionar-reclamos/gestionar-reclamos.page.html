@@ -8,8 +8,18 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-item>
+    <ion-label>Filtrar por estado</ion-label>
+    <ion-select [(ngModel)]="filtroEstado">
+      <ion-select-option value="">Todos</ion-select-option>
+      <ion-select-option value="pendiente">Pendiente</ion-select-option>
+      <ion-select-option value="aprobado">Aprobado</ion-select-option>
+      <ion-select-option value="rechazado">Rechazado</ion-select-option>
+      <ion-select-option value="cerrado">Cerrado</ion-select-option>
+    </ion-select>
+  </ion-item>
   <ion-list>
-    <ion-card *ngFor="let reclamo of reclamos">
+    <ion-card *ngFor="let reclamo of reclamosFiltrados">
       <ion-card-header>
         <ion-item lines="none">
           <ion-label>
@@ -25,14 +35,26 @@
       </ion-card-content>
 
       <ion-card-content class="ion-text-right">
-        <ion-button color="success" size="small" (click)="cambiarEstado(reclamo, 'aprobado')">
-          Aprobar
-        </ion-button>
-        <ion-button color="danger" size="small" (click)="cambiarEstado(reclamo, 'rechazado')">
-          Rechazar
-        </ion-button>
-        <ion-button color="medium" size="small" (click)="cambiarEstado(reclamo, 'cerrado')">
-          Cerrar
+        <!-- Botones de estado para admin -->
+        <ng-container *ngIf="authService.getRol() === 'admin'">
+          <ion-button color="success" size="small" (click)="cambiarEstado(reclamo, 'aprobado')">
+            Aprobar
+          </ion-button>
+          <ion-button color="danger" size="small" (click)="cambiarEstado(reclamo, 'rechazado')">
+            Rechazar
+          </ion-button>
+          <ion-button color="medium" size="small" (click)="cambiarEstado(reclamo, 'cerrado')">
+            Cerrar
+          </ion-button>
+        </ng-container>
+        
+        <!-- Botón de eliminar para propietario o admin -->
+        <ion-button *ngIf="reclamo.userId === authService.getUID() || authService.getRol() === 'admin'" 
+                    fill="clear" 
+                    color="danger" 
+                    size="small" 
+                    (click)="eliminarReclamo(reclamo.id)">
+          <i class="bi bi-trash3-fill"></i>
         </ion-button>
       </ion-card-content>
     </ion-card>

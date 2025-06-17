@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController, IonContent } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { AnunciosService } from 'src/app/services/anuncios.service';
+import { ReclamosService } from 'src/app/services/reclamos.service';
 
 @Component({
   standalone: true,
@@ -23,14 +24,23 @@ export class ComentariosPage implements OnInit {
   nuevoComentario: string = '';
 
 
-  constructor(private modalCtrl: ModalController, private anunciosService: AnunciosService) {}
+  constructor(
+    private modalCtrl: ModalController,
+    private anunciosService: AnunciosService,
+    private reclamosService: ReclamosService
+  ) {}
 
   ngOnInit() {
-    const anuncioId = this.item.id;
-    this.anunciosService.getComentarios(this.item.id).subscribe(coments => {
-      this.comentarios = coments as { autor: string; texto: string; fecha?: string }[];
-    });
-    
+    if (this.tipo === 'anuncio') {
+      this.anunciosService.getComentarios(this.item.id).subscribe(coments => {
+        this.comentarios = coments as { autor: string; texto: string; fecha?: string }[];
+      });
+    } else {
+      this.reclamosService.getComentarios(this.item.id).subscribe(coments => {
+        this.comentarios = coments as { autor: string; texto: string; fecha?: string }[];
+      });
+    }
+
   }
 
   agregarComentario() {
@@ -42,9 +52,15 @@ export class ComentariosPage implements OnInit {
       texto
     };
   
-    this.anunciosService.agregarComentario(this.item.id, comentario).then(() => {
-      this.nuevoComentario = '';
-    });
+    if (this.tipo === 'anuncio') {
+      this.anunciosService.agregarComentario(this.item.id, comentario).then(() => {
+        this.nuevoComentario = '';
+      });
+    } else {
+      this.reclamosService.agregarComentario(this.item.id, comentario).then(() => {
+        this.nuevoComentario = '';
+      });
+    }
   }
   
 

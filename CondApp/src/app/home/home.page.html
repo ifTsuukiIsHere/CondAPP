@@ -72,7 +72,7 @@
         <ion-card-header>
           <ion-item lines="none">
             <ion-avatar slot="start">
-              <img [src]="anuncio.avatarUrl" />
+              <img [src]="anuncio.avatarUrl" alt="Avatar de {{ anuncio.autor }}" />
             </ion-avatar>
             <ion-label>
               <h3>{{ anuncio.autor }} - {{ anuncio.rol }}</h3>
@@ -108,45 +108,82 @@
 
   <!-- MERCADO -->
   <ng-container *ngIf="segmento === 'mercado'">
-    <ion-card *ngFor="let producto of productos" class="producto-card">
-      <ion-card-header>
-        <ion-item lines="none">
-          <ion-avatar slot="start">
-            <img [src]="producto.avatarUrl" />
-          </ion-avatar>
-          <ion-label>
-            <h3>{{ producto.usuario }}</h3>
-            <p>{{ producto.casa }} · {{ producto.fecha | date:'shortDate' }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-card-header>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button expand="block" color="primary" (click)="irCrearProducto()" *ngIf="rol === 'usuario'">
+          Publicar producto
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ng-container *ngIf="productos$ | async as productos">
+      <ion-card *ngFor="let producto of productos" class="producto-card">
+        <ion-card-header>
+          <ion-item lines="none">
+            <ion-avatar slot="start">
+              <img [src]="producto.avatarUrl" alt="Avatar de {{ producto.usuario }}" />
+            </ion-avatar>
+            <ion-label>
+              <h3>{{ producto.usuario }}</h3>
+              <p>{{ producto.casa }} · {{ producto.fecha | date:'shortDate' }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-card-header>
 
-      <!-- CONTENIDO HORIZONTAL -->
-      <ion-card-content class="producto-horizontal">
-        <img [src]="producto.imagenUrl" alt="Imagen del producto" (click)="abrirImagen(producto.imagenUrl)"
-          class="click-animada" />
-        <div class="producto-info">
-          <h2>{{ producto.nombre }}</h2>
-          <p>{{ producto.descripcion }}</p>
-        </div>
-      </ion-card-content>
+        <!-- CONTENIDO HORIZONTAL -->
+        <ion-card-content class="producto-horizontal">
+          <img [src]="producto.imagenUrl" alt="Imagen del producto"
+            (click)="abrirImagen(producto.imagenUrl)" class="click-animada" />
+          <div class="producto-info">
+            <h2>{{ producto.nombre }}</h2>
+            <p>{{ producto.descripcion }}</p>
+            <p *ngIf="producto.precio">Precio: {{ producto.precio }}</p>
+            <p *ngIf="producto.categoria">Categoría: {{ producto.categoria }}</p>
+          </div>
+        </ion-card-content>
 
-<ion-card-content class="ion-text-right">
-  <ion-button
-    fill="outline"
-    color="success"
-    size="small"
-    [href]="'https://wa.me/' + producto.whatsapp + '?text=' + encodeURI('¡Hola! Estoy interesad@ en ' + producto.nombre + ' que publicaste en la aplicación CondAPP. Quisiera saber más información.')"
-    target="_blank"
-  >
-    <img src="assets/img/whatsapp-svgrepo-com.svg" alt="WhatsApp" class="icono-whatsapp" />
-    Contactar
-  </ion-button>
-</ion-card-content>
-    </ion-card>
+        <ion-card-content class="ion-text-right botones-acciones">
+          <ion-button fill="clear" size="small" (click)="onComentar('producto', producto)">
+            <i class="bi bi-chat"></i>
+          </ion-button>
+          <ion-button fill="clear" size="small" (click)="onLike('producto', producto)">
+            <i class="bi bi-heart"></i>
+            <span style="margin-left: 4px;">{{ producto.likes || 0 }}</span>
+          </ion-button>
+          <ion-button fill="clear" color="danger" size="small" (click)="eliminarProducto(producto)" *ngIf="rol === 'admin' || producto.uid === authService.getUID()">
+            <i class="bi bi-trash3-fill"></i>
+          </ion-button>
+        </ion-card-content>
+
+        <ion-card-content class="ion-text-right">
+          <ng-container *ngIf="producto.whatsapp; else noWhatsapp">
+            <ion-button
+              fill="outline"
+              color="success"
+              size="small"
+              [href]="'https://wa.me/' + producto.whatsapp + '?text=' + encodeURI('¡Hola! Estoy interesad@ en ' + producto.nombre + ' que publicaste en la aplicación CondAPP. Quisiera saber más información.')"
+              target="_blank"
+            >
+              <img src="assets/img/whatsapp-svgrepo-com.svg" alt="WhatsApp" class="icono-whatsapp" />
+              Contactar
+            </ion-button>
+          </ng-container>
+          <ng-template #noWhatsapp>
+            <ion-button
+              fill="outline"
+              color="warning"
+              size="small"
+              disabled
+            >
+              <img src="assets/img/whatsapp-svgrepo-com.svg" alt="WhatsApp" class="icono-whatsapp" />
+              WhatsApp no disponible
+            </ion-button>
+          </ng-template>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
 
     <div class="imagen-modal" *ngIf="imagenSeleccionada" (click)="cerrarImagen()">
-      <img [src]="imagenSeleccionada" class="zoom-in" />
+      <img [src]="imagenSeleccionada" class="zoom-in" alt="Imagen ampliada" />
     </div>
   </ng-container>
   
@@ -154,12 +191,24 @@
 
   <!-- RECLAMOS -->
   <ng-container *ngIf="segmento === 'reclamos'">
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" color="primary" (click)="irCrearReclamo()" *ngIf="rol === 'usuario'">
+          Crear reclamo
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" color="warning" (click)="irGestionarMisReclamos()" *ngIf="rol === 'usuario'">
+          Gestionar Mis Reclamos
+        </ion-button>
+      </ion-col>
+    </ion-row>
     <ion-list>
       <ion-card *ngFor="let reclamo of reclamos">
         <ion-card-header>
           <ion-item lines="none">
             <ion-avatar slot="start">
-              <img [src]="reclamo.avatarUrl" />
+              <img [src]="reclamo.avatarUrl" alt="Avatar de {{ reclamo.autor }}" />
             </ion-avatar>
             <ion-label>
               <h3>{{ reclamo.autor }}</h3>
@@ -170,6 +219,7 @@
 
         <ion-card-content>
           <p style="white-space: pre-wrap;">{{ reclamo.mensaje }}</p>
+          <p><strong>Estado:</strong> {{ reclamo.estado | uppercase }}</p>
         </ion-card-content>
 
         <ion-card-content class="ion-text-right">
@@ -184,6 +234,7 @@
           </ion-button>
           <ion-button fill="clear" size="small" (click)="onLike('reclamo', reclamo)">
             <i class="bi bi-heart"></i>
+            <span style="margin-left: 4px;">{{ reclamo.likes || 0 }}</span>
           </ion-button>
           <ion-button fill="clear" size="small" (click)="onCompartir('reclamo', reclamo)">
             <i class="bi bi-share"></i>
@@ -218,8 +269,13 @@
       </ion-card-header>
       <ion-card-content class="ion-text-center">
         <ion-button expand="block" color="success" (click)="irCrearAnuncio()">Crear nuevo anuncio</ion-button>
-        <ion-button expand="block" color="warning" (click)="irGestionarReclamos()">Gestionar reclamos</ion-button>
-        <ion-button expand="block" color="tertiary" (click)="irGestionarMercado()">Gestionar mercado</ion-button>
+        <ion-button expand="block" color="warning" (click)="irGestionarReclamos()">
+          Gestionar reclamos
+          <ion-badge color="danger" *ngIf="reclamosPendientesCount > 0" style="margin-left:8px;">
+            {{ reclamosPendientesCount }}
+          </ion-badge>
+        </ion-button>
+        <ion-button expand="block" color="primary" (click)="irCrearUsuario()">Crear usuario</ion-button>
       </ion-card-content>
     </ion-card>
   </ng-container>

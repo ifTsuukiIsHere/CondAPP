@@ -221,3 +221,14 @@ ion-card img:hover {
   object-fit: contain;
   vertical-align: middle;
 }
+
+@media (max-width: 480px) {
+  .producto-horizontal {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .producto-horizontal img {
+    margin-bottom: 8px;
+  }
+}

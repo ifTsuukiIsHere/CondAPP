@@ -11,14 +11,89 @@
   <ion-card>
     <ion-card-header>
       <ion-avatar class="ion-margin-auto">
-        <img [src]="'https://ui-avatars.com/api/?name=' + usuario.nombre">
+        <img [src]="'https://ui-avatars.com/api/?name=' + (usuario?.nombre || 'Usuario')">
       </ion-avatar>
     </ion-card-header>
 
-    <ion-card-content class="ion-text-center">
-      <h2>{{ usuario.nombre }}</h2>
-      <p><strong>Correo:</strong> {{ usuario.correo }}</p>
-      <p><strong>Rol:</strong> {{ usuario.rol | uppercase }}</p>
+    <ion-card-content>
+      <div *ngIf="usuario">
+        <!-- Formulario de perfil -->
+        <form [formGroup]="perfilForm" (ngSubmit)="actualizar()" *ngIf="!mostrandoCambioContrasena; else cambioContrasenaTemplate">
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input type="text" formControlName="nombre"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Correo</ion-label>
+            <ion-input type="email" formControlName="correo" readonly></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Número de WhatsApp</ion-label>
+            <ion-input type="tel" formControlName="whatsapp" placeholder="Ej: +56912345678"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Número de Casa</ion-label>
+            <ion-input type="number" formControlName="casa"></ion-input>
+          </ion-item>
+
+          <ion-button expand="block" type="submit" [disabled]="!perfilForm.valid" color="primary" class="ion-margin-top">
+            Actualizar datos
+          </ion-button>
+
+          <ion-button expand="block" (click)="mostrarCambioContrasena(true)" color="secondary" class="ion-margin-top">
+            Cambiar contraseña
+          </ion-button>
+
+          <ion-button expand="block" (click)="cancelar()" color="medium" class="ion-margin-top">
+            Cancelar
+          </ion-button>
+        </form>
+
+        <!-- Template para cambio de contraseña -->
+        <ng-template #cambioContrasenaTemplate>
+          <form [formGroup]="contrasenaForm" (ngSubmit)="cambiarContrasena()">
+            <ion-list>
+              <ion-item>
+                <ion-label position="floating">Contraseña actual</ion-label>
+                <ion-input type="password" formControlName="contrasenaActual" required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Nueva contraseña</ion-label>
+                <ion-input type="password" formControlName="nuevaContrasena" required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Confirmar nueva contraseña</ion-label>
+                <ion-input type="password" formControlName="confirmarContrasena" required></ion-input>
+              </ion-item>
+
+
+
+              <ion-note *ngIf="contrasenaForm.hasError('noCoinciden') && contrasenaForm.get('confirmarContrasena')?.touched" 
+                        color="danger" class="ion-padding-start">
+                Las contraseñas no coinciden
+              </ion-note>
+            </ion-list>
+
+            <ion-button expand="block" type="submit" [disabled]="!contrasenaForm.valid" color="primary" class="ion-margin-top">
+              Guardar nueva contraseña
+            </ion-button>
+
+            <ion-button expand="block" (click)="mostrarCambioContrasena(false)" color="medium" class="ion-margin-top">
+              Cancelar
+            </ion-button>
+          </form>
+        </ng-template>
+      </div>
+      
+      <div *ngIf="!usuario">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Cargando datos...</p>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

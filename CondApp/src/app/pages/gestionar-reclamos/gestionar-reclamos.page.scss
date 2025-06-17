@@ -1,0 +1,13 @@
+.custom-tooltip {
+  --background: rgba(0, 0, 0, 0.8);
+  --padding: 8px 16px;
+  --border-radius: 4px;
+  --color: white;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
+  .popover-content {
+    min-width: 150px;
+    text-align: center;
+    font-size: 14px;
+  }
+}
