@@ -39,6 +39,10 @@ ion-toolbar {
   --ion-color-step-700: transparent !important;
   --ion-color-step-800: transparent !important;
   --ion-color-step-900: transparent !important;
+
+  ion-button {
+    --color: var(--ion-color-light);
+  }
 }
 
 

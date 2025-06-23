@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, UserCredential, createUserWithEmailAndPassword, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, signOut, UserCredential, createUserWithEmailAndPassword, reauthenticateWithCredential, EmailAuthProvider, updatePassword, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
@@ -71,6 +71,15 @@ export class AuthService {
     const user = this.auth.currentUser;
     if (!user) return null;
     return user.photoURL || null;
+  }
+
+  async resetPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+    } catch (error) {
+      console.error('Error al enviar correo de recuperación:', error);
+      throw error;
+    }
   }
 
   async getCurrentUser() {

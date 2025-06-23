@@ -1,43 +1,110 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" (click)="goBack()"></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Chat Libre</ion-title>
+    <ion-title>Chat de la Comunidad</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding chat-container">
-  <div *ngFor="let msg of mensajes" 
-       [class.message-sent]="msg.autor === 'Tú'"
-       [class.message-received]="msg.autor !== 'Tú'" 
-       class="message-bubble">
-    <div class="message-author">{{ msg.autor }}</div>
-    <div class="message-text">{{ msg.texto }}</div>
-    <div class="message-time">{{ formatearHora(msg.hora) }}</div>
+<ion-content [fullscreen]="true" class="chat-container" scrollEvents="true" (ionScroll)="onScroll($event)">
+  <!-- Indicador de carga inicial -->
+  <div *ngIf="isLoading && mensajes.length === 0" class="loading-container ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando mensajes...</p>
   </div>
+
+  <!-- Indicador de carga de más mensajes -->
+  <div *ngIf="isLoading && mensajes.length > 0" class="loading-more ion-text-center ion-padding">
+    <ion-spinner name="crescent" color="medium"></ion-spinner>
+  </div>
+
+  <!-- Contenedor de mensajes -->
+  <div class="messages-container">
+    <ng-container *ngIf="!isLoading || mensajes.length > 0">
+      <div #messagesContainer class="messages-wrapper">
+        <!-- Mensajes -->
+        <div *ngFor="let msg of mensajes" 
+             [class.message-wrapper-sent]="esMio(msg)"
+             [class.message-wrapper-received]="!esMio(msg)">
+          
+          <!-- Contenido del mensaje -->
+          <div class="message-content" [class.sent]="esMio(msg)" [class.received]="!esMio(msg)">
+            <!-- Cabecera con nombre y hora -->
+            <div class="message-header" *ngIf="!esMio(msg)">
+              <span class="message-author">{{ msg.autor }}</span>
+              <span *ngIf="msg.numeroCasa" class="message-casa">Casa {{ msg.numeroCasa }}</span>
+              <span class="message-time">{{ formatearHora(msg.fecha) }}</span>
+            </div>
+            
+            <!-- Burbuja de mensaje -->
+            <div class="message-bubble" [class.sent]="esMio(msg)" [class.received]="!esMio(msg)">
+              <div class="message-text">
+                {{ msg.texto }}
+                <ion-spinner *ngIf="msg.estado === 'enviando'" name="dots" class="message-status"></ion-spinner>
+                <ion-icon *ngIf="msg.estado === 'error'" name="warning" class="message-error-icon"></ion-icon>
+              </div>
+              
+              <!-- Pie del mensaje con hora -->
+              <div class="message-footer">
+                <span class="message-time">{{ formatearHora(msg.fecha) }}</span>
+                <ion-icon *ngIf="esMio(msg) && msg.estado === 'enviado'" name="checkmark-done" class="message-sent-icon"></ion-icon>
+                <ion-icon *ngIf="esMio(msg) && msg.estado === 'error'" name="alert-circle" class="message-error-icon"></ion-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mensaje cuando no hay mensajes -->
+        <div *ngIf="!isLoading && mensajes.length === 0" class="ion-text-center ion-padding no-messages">
+          <ion-icon name="chatbubbles-outline" class="empty-icon"></ion-icon>
+          <h3>¡Bienvenido al chat de la comunidad!</h3>
+          <p>Comienza una conversación con tus vecinos</p>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  
+  <!-- Botón para ir al final del chat -->
+  <ion-fab *ngIf="showScrollButton" vertical="bottom" horizontal="end" slot="fixed" (click)="scrollToBottom()" class="scroll-to-bottom">
+    <ion-fab-button size="small">
+      <ion-icon name="arrow-down"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 
-<ion-footer>
+<!-- Área de envío de mensajes -->
+<ion-footer class="ion-no-border message-footer">
   <ion-toolbar>
-    <div class="input-container">
-      <ion-input
-        [(ngModel)]="mensajeNuevo"
-        placeholder="Escribe tu mensaje..."
-        class="input-mensaje"
-        (keyup.enter)="enviarMensaje()"
-      ></ion-input>
-
-      <ion-button 
-        (click)="enviarMensaje()" 
-        class="btn-enviar"
-        fill="solid" 
-        shape="round"
-      >
-        <svg slot="icon-only" viewBox="0 0 24 24" class="send-icon">
-          <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-        </svg>
-      </ion-button>
-    </div>
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="10">
+          <ion-item class="message-input-container" lines="none">
+            <ion-textarea
+              [(ngModel)]="mensajeNuevo"
+              placeholder="Escribe un mensaje..."
+              rows="1"
+              autoGrow="true"
+              class="message-input"
+              (keyup.enter)="!isSending && enviarMensaje()"
+              [disabled]="!usuarioActual || isSending"
+              #messageInput
+            ></ion-textarea>
+          </ion-item>
+        </ion-col>
+        <ion-col size="2" class="ion-text-center">
+          <ion-button 
+            (click)="!isSending && enviarMensaje()" 
+            fill="clear"
+            [disabled]="!mensajeNuevo.trim() || !usuarioActual || isSending"
+            class="send-button"
+            [title]="mensajeNuevo.trim() ? 'Enviar mensaje' : 'Escribe un mensaje'"
+          >
+            <ion-spinner *ngIf="isSending" name="crescent"></ion-spinner>
+            <ion-icon *ngIf="!isSending" name="send" slot="icon-only" class="send-icon"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-footer>

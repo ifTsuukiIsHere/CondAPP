@@ -1,22 +1,82 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <ion-item>
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input type="email" formControlName="email" required></ion-input>
-    </ion-item>
+<ion-content [fullscreen]="true" [scrollY]="!isKeyboardVisible" class="login-content">
+  <div class="login-wrapper" [class.keyboard-visible]="isKeyboardVisible">
+    <div #loginCard class="login-card">
+      <!-- Título -->
+      <div class="logo-container" [class.compact]="isKeyboardVisible">
+        <h1>Bienvenido</h1>
+        <p *ngIf="!isKeyboardVisible">Inicia sesión para continuar</p>
+      </div>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" required></ion-input>
-    </ion-item>
+      <!-- Mensaje de error -->
+      <div *ngIf="error" class="error-message">
+        <ion-icon name="warning-outline"></ion-icon>
+        <span>{{ error }}</span>
+      </div>
 
-    <ion-button expand="block" (click)="onLogin()">Ingresar</ion-button>
+      <!-- Formulario de inicio de sesión -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+        <!-- Campo de correo electrónico -->
+        <ion-item lines="none" class="form-item" [class.invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+          <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+          <ion-input 
+            type="email" 
+            formControlName="email" 
+            placeholder="Correo electrónico"
+            required
+            class="custom-input"
+            enterkeyhint="next"
+            inputmode="email"
+            autocomplete="email"
+            (ionBlur)="loginForm.get('email')?.markAsTouched()"
+          ></ion-input>
+        </ion-item>
 
-  </form>
+        <!-- Campo de contraseña -->
+        <ion-item lines="none" class="form-item" [class.invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+          <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+          <ion-input 
+            type="password" 
+            formControlName="password" 
+            placeholder="Contraseña"
+            required
+            class="custom-input"
+            enterkeyhint="done"
+            autocomplete="current-password"
+            (ionBlur)="loginForm.get('password')?.markAsTouched()"
+            (keyup.enter)="onLogin()"
+          ></ion-input>
+        </ion-item>
+
+        <!-- Botón de inicio de sesión -->
+        <ion-button 
+          expand="block" 
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid || isLoading"
+          [shape]="'round'"
+          [strong]="true"
+        >
+          <ion-spinner *ngIf="isLoading" name="crescent" class="spinner"></ion-spinner>
+          <span *ngIf="!isLoading" class="button-text">
+            <ion-icon name="log-in-outline" slot="start"></ion-icon>
+            Ingresar
+          </span>
+        </ion-button>
+      </form>
+
+      <!-- Enlace de recuperación de contraseña -->
+      <div class="forgot-password">
+        <a (click)="onForgotPassword($event)" class="forgot-link">
+          <ion-icon name="key-outline"></ion-icon>
+          ¿Olvidaste tu contraseña?
+        </a>
+      </div>
+    </div>
+  </div>
 </ion-content>

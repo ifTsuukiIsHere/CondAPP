@@ -1,13 +1,11 @@
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Estilos globales para la aplicación CondApp
  */
+
+/* Fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
@@ -18,7 +16,7 @@
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
@@ -26,14 +24,961 @@
 @import "@ionic/angular/css/flex-utils.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
+/* Variables globales */
+:root {
+  /* Colores primarios */
+  --ion-color-primary: #4361ee;
+  --ion-color-primary-rgb: 67, 97, 238;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3b55d2;
+  --ion-color-primary-tint: #5671f0;
+  
+  /* Colores secundarios */
+  --ion-color-secondary: #3a0ca3;
+  --ion-color-secondary-rgb: 58, 12, 163;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #330b8f;
+  --ion-color-secondary-tint: #4e24ac;
+  
+  /* Colores de fondo */
+  --ion-background-color: #f8f9fa;
+  --ion-background-color-rgb: 248, 249, 250;
+  --ion-item-background: #ffffff;
+  --ion-toolbar-background: #ffffff;
+  --ion-tab-bar-background: #ffffff;
+  
+  /* Colores de texto */
+  --ion-text-color: #2d3436;
+  --ion-text-color-rgb: 45, 52, 54;
+  --ion-text-color-step-400: #666666;
+  --ion-text-color-step-600: #333333;
+  
+  /* Bordes */
+  --ion-border-color: rgba(0, 0, 0, 0.08);
+  --ion-item-border-color: rgba(0, 0, 0, 0.05);
+  
+  /* Sombras */
+  --ion-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --ion-box-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  
+  /* Espaciado */
+  --ion-padding: 16px;
+  --ion-margin: 16px;
+  
+  /* Radio de borde */
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  
+  /* Transiciones */
+  --transition: all 0.3s ease;
+}
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* Aplicar fuente personalizada */
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* Estilos base */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--ion-background-color);
+  color: var(--ion-text-color);
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+/* Contenedor principal */
+ion-app {
+  background: var(--ion-background-color);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Barra de herramientas */
+ion-header {
+  ion-toolbar {
+    --background: var(--ion-toolbar-background);
+    --color: var(--ion-text-color);
+    --border-color: transparent;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --min-height: 64px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    
+    ion-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding: 0 16px;
+    }
+    
+    ion-buttons {
+      margin: 0;
+      
+      ion-button {
+        --padding-start: 8px;
+        --padding-end: 8px;
+        --ripple-color: currentColor;
+        margin: 0 4px;
+        
+        ion-icon {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+/* Contenido principal */
+ion-content {
+  --background: var(--ion-background-color);
+  --padding-start: var(--ion-padding);
+  --padding-end: var(--ion-padding);
+  --padding-top: var(--ion-padding);
+  --padding-bottom: var(--ion-padding);
+  
+  &.ion-padding {
+    --padding-start: var(--ion-padding);
+    --padding-end: var(--ion-padding);
+    --padding-top: var(--ion-padding);
+    --padding-bottom: var(--ion-padding);
+  }
+}
+
+/* Tarjetas */
+ion-card {
+  --background: var(--ion-item-background);
+  margin: 12px 0;
+  border-radius: var(--border-radius);
+  box-shadow: var(--ion-box-shadow);
+  transition: var(--transition);
+  overflow: hidden;
+  
+  &:hover {
+    box-shadow: var(--ion-box-shadow-md);
+    transform: translateY(-2px);
+  }
+  
+  ion-card-header {
+    padding: 16px 16px 8px;
+    
+    ion-card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    ion-card-subtitle {
+      color: var(--ion-text-color-step-400);
+      font-size: 0.875rem;
+      margin-top: 0;
+    }
+  }
+  
+  ion-card-content {
+    padding: 8px 16px 16px;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ion-text-color-step-600);
+  }
+}
+
+/* Botones */
+ion-button {
+  --border-radius: var(--border-radius-sm);
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --box-shadow: none;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: var(--transition);
+  
+  &[shape="round"] {
+    --border-radius: 50%;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    width: 48px;
+    height: 48px;
+  }
+  
+  &[size="small"] {
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    font-size: 0.875rem;
+  }
+  
+  &[expand="block"] {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    margin: 0;
+  }
+  
+  &[fill="outline"] {
+    --border-width: 1.5px;
+  }
+  
+  &:hover {
+    --box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.2);
+  }
+  
+  ion-icon {
+    font-size: 1.25rem;
+    margin-right: 8px;
+  }
+}
+
+/* Formularios */
+ion-item {
+  --background: var(--ion-item-background);
+  --border-color: var(--ion-item-border-color);
+  --border-radius: var(--border-radius-sm);
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  --min-height: 56px;
+  margin-bottom: 12px;
+  transition: var(--transition);
+  
+  &:hover {
+    --border-color: rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+  
+  &.item-has-focus {
+    --border-color: var(--ion-color-primary);
+  }
+  
+  ion-label {
+    color: var(--ion-text-color-step-600);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    
+    &[position="stacked"],
+    &[position="floating"] {
+      transform: none;
+      margin-bottom: 8px;
+      font-size: 0.875rem;
+    }
+  }
+  
+  ion-input, ion-textarea, ion-select, ion-datetime {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --background: var(--ion-item-background);
+    --border-radius: var(--border-radius-sm);
+    --border-width: 1.5px;
+    --border-style: solid;
+    --border-color: var(--ion-item-border-color);
+    --placeholder-color: var(--ion-text-color-step-400);
+    --placeholder-opacity: 1;
+    font-size: 0.9375rem;
+    transition: var(--transition);
+    
+    &.has-focus {
+      --border-color: var(--ion-color-primary);
+      --box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+    }
+  }
+  
+  &.item-has-focus {
+    ion-input, ion-textarea, ion-select, ion-datetime {
+      --border-color: var(--ion-color-primary);
+      --box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+    }
+  }
+  
+  &.item-has-value:not(.item-has-focus) {
+    ion-label[position="floating"] {
+      transform: translateY(0) scale(0.8);
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+/* Listas */
+ion-list {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  
+  ion-list-header {
+    padding-left: 0;
+    margin-bottom: 12px;
+    
+    ion-label {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ion-text-color);
+    }
+  }
+  
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --min-height: 56px;
+    --border-radius: var(--border-radius-sm);
+    margin-bottom: 8px;
+    
+    ion-label {
+      margin: 12px 0;
+      
+      h2 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      
+      p {
+        font-size: 0.875rem;
+        color: var(--ion-text-color-step-400);
+        margin: 0;
+      }
+    }
+    
+    ion-note {
+      font-size: 0.8125rem;
+      color: var(--ion-text-color-step-400);
+    }
+    
+    ion-icon[slot="start"] {
+      margin: 0 16px 0 0;
+      font-size: 1.5rem;
+      color: var(--ion-color-primary);
+    }
+    
+    ion-avatar {
+      margin: 8px 16px 8px 0;
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+  &.list-inset {
+    margin: 16px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    
+    ion-item {
+      --border-radius: 0;
+      margin: 0;
+      
+      &:first-child {
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+      }
+      
+      &:last-child {
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+      }
+    }
+  }
+}
+
+/* Pestañas */
+ion-tab-bar {
+  --background: var(--ion-tab-bar-background);
+  --border: 1px solid var(--ion-item-border-color);
+  --color: var(--ion-text-color-step-400);
+  --color-selected: var(--ion-color-primary);
+  padding: 8px 0;
+  height: 64px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  
+  ion-tab-button {
+    --color-selected: var(--ion-color-primary);
+    --padding-bottom: 4px;
+    
+    ion-icon {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    
+    ion-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      margin: 4px 0 0;
+      letter-spacing: 0.3px;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: var(--ion-color-primary);
+      border-radius: 3px 3px 0 0;
+      transform: translateX(-50%);
+      transition: var(--transition);
+      opacity: 0;
+    }
+    
+    &.tab-selected {
+      &::before {
+        width: 40%;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* Alertas y modales */
+ion-alert {
+  --backdrop-opacity: 0.4;
+  --background: var(--ion-item-background);
+  --min-width: 320px;
+  --max-width: 90%;
+  --width: 100%;
+  --border-radius: var(--border-radius);
+  
+  .alert-wrapper {
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .alert-head {
+    padding: 20px 24px 16px;
+    
+    .alert-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ion-text-color);
+      margin: 0 0 8px;
+    }
+    
+    .alert-sub-title {
+      font-size: 0.9375rem;
+      color: var(--ion-text-color-step-400);
+      margin: 0;
+    }
+  }
+  
+  .alert-message {
+    padding: 0 24px 20px;
+    font-size: 0.9375rem;
+    color: var(--ion-text-color-step-600);
+    
+    &:empty {
+      display: none;
+    }
+  }
+  
+  .alert-button-group {
+    padding: 8px;
+    flex-wrap: nowrap;
+    
+    button {
+      margin: 0 4px;
+      border-radius: var(--border-radius-sm);
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      flex: 1;
+      
+      &:first-child {
+        margin-left: 0;
+      }
+      
+      &:last-child {
+        margin-right: 0;
+      }
+      
+      &:not(.alert-button-role-cancel) {
+        --background: var(--ion-color-primary);
+        --color: var(--ion-color-primary-contrast);
+      }
+      
+      &.alert-button-role-cancel {
+        --color: var(--ion-text-color);
+      }
+    }
+  }
+}
+
+/* Toast */
+ion-toast {
+  --background: var(--ion-color-step-800);
+  --color: #ffffff;
+  --border-radius: var(--border-radius-sm);
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --button-color: #ffffff;
+  
+  &::part(message) {
+    font-size: 0.9375rem;
+    font-weight: 400;
+  }
+  
+  &::part(button) {
+    color: #ffffff;
+    opacity: 0.8;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+  
+  &[color="success"] {
+    --background: var(--ion-color-success);
+  }
+  
+  &[color="warning"] {
+    --background: var(--ion-color-warning);
+    --color: #000000;
+    --button-color: #000000;
+  }
+  
+  &[color="danger"] {
+    --background: var(--ion-color-danger);
+  }
+  
+  &[color="primary"] {
+    --background: var(--ion-color-primary);
+  }
+}
+
+/* Loading */
+ion-loading {
+  --background: rgba(0, 0, 0, 0.4);
+  --spinner-color: var(--ion-color-primary);
+  
+  .loading-wrapper {
+    background: var(--ion-item-background);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    
+    .loading-content {
+      font-weight: 500;
+      color: var(--ion-text-color);
+      margin-top: 12px;
+    }
+  }
+}
+
+/* Tema oscuro */
+.ion-palette-dark {
+  /* Colores base mejorados para mejor contraste */
+  --ion-background-color: #121212;
+  --ion-background-color-rgb: 18, 18, 18;
+  --ion-text-color: #f0f0f0; /* Texto más claro para mejor contraste */
+  --ion-text-color-rgb: 240, 240, 240;
+  --ion-text-color-step-400: #c0c0c0; /* Texto secundario más claro */
+  --ion-text-color-step-600: #e0e0e0;
+  
+  /* Fondo de componentes */
+  --ion-toolbar-background: #1a1a1e;
+  --ion-item-background: #1e1e22; /* Fondo ligeramente más claro para mejor contraste */
+  --ion-tab-bar-background: #1a1a1e;
+  --ion-card-background: #242428; /* Fondo de tarjetas más claro */
+  
+  /* Bordes */
+  --ion-border-color: rgba(255, 255, 255, 0.12);
+  --ion-item-border-color: rgba(255, 255, 255, 0.1);
+  
+  /* Sombras */
+  --ion-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --ion-box-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  
+  /* Ajustes específicos para tarjetas */
+  ion-card {
+    --background: var(--ion-card-background);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    
+    ion-card-header {
+      --background: #2a2a2e;
+      border-bottom: 1px solid var(--ion-border-color);
+      
+      ion-card-title {
+        color: #ffffff;
+      }
+      
+      ion-card-subtitle {
+        color: var(--ion-text-color-step-400);
+      }
+    }
+    
+    ion-card-content {
+      color: var(--ion-text-color-step-600);
+    }
+  }
+  
+  /* Mejoras para items de lista */
+  ion-label, ion-title, ion-card-title, ion-card-subtitle {
+    color: #f0f0f0 !important;
+  }
+  ion-note {
+    color: #c0c0c0 !important;
+  }
+  
+  /* Placeholders de formularios */
+  ion-input::part(placeholder),
+  ion-textarea::part(placeholder) {
+    color: #bbbbbb !important;
+    opacity: 1 !important;
+  }
+
+  /* Badges, chips y tooltips */
+  ion-badge, ion-chip, .tooltip {
+    background: #232336 !important;
+    color: #fff !important;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  /* Botones outline y secundarios */
+  ion-button[fill="outline"],
+  ion-button[color="secondary"] {
+    --color: #f0f0f0;
+    --border-color: #5671f0;
+    --background: transparent;
+    --background-hover: rgba(86,113,240,0.1);
+    --background-activated: rgba(86,113,240,0.2);
+  }
+
+  /* Estados de éxito, advertencia y error */
+  ion-badge[color="success"],
+  ion-badge[color="warning"],
+  ion-badge[color="danger"] {
+    color: #fff !important;
+  }
+
+  /* Chips secundarios */
+  ion-chip[color="secondary"] {
+    background: #3a0ca3 !important;
+    color: #fff !important;
+  }
+
+  /* Mejoras para items de lista */
+  ion-item {
+    --background: var(--ion-item-background);
+    --border-color: var(--ion-item-border-color);
+    --color: var(--ion-text-color);
+    
+    &:hover {
+      --background: #2a2a2e;
+      --border-color: rgba(var(--ion-color-primary-rgb), 0.5);
+    }
+    
+    ion-label {
+      color: var(--ion-text-color);
+      
+      h2, h3, h4, h5, h6 {
+        color: #ffffff;
+      }
+      
+      p {
+        color: var(--ion-text-color-step-400);
+      }
+    }
+    
+    ion-note {
+      color: var(--ion-text-color-step-400);
+    }
+    
+    &.item-has-focus {
+      --border-color: var(--ion-color-primary);
+      --box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+    }
+  }
+  
+  /* Mejoras para formularios */
+  ion-input, ion-textarea, ion-select, ion-datetime {
+    --background: #2a2a2e;
+    --border-color: var(--ion-item-border-color);
+    --color: var(--ion-text-color);
+    --placeholder-color: var(--ion-text-color-step-400);
+    --placeholder-opacity: 0.8;
+    
+    &.has-focus {
+      --border-color: var(--ion-color-primary);
+      --box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+    }
+  }
+  
+  /* Mejoras para listas */
+  ion-list {
+    background: transparent;
+    
+    ion-item {
+      --background: var(--ion-item-background);
+      --border-color: var(--ion-item-border-color);
+      
+      ion-label {
+        color: var(--ion-text-color);
+        
+        h2 {
+          color: #ffffff;
+          font-weight: 500;
+        }
+        
+        p {
+          color: var(--ion-text-color-step-400);
+        }
+      }
+      
+      ion-icon[slot="start"] {
+        color: var(--ion-color-primary);
+      }
+      
+      &:last-child {
+        --border-style: none;
+      }
+    }
+    
+    &.list-inset {
+      background: var(--ion-card-background);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      
+      ion-item {
+        --border-color: var(--ion-item-border-color);
+        
+        &:last-child {
+          --border-style: none;
+        }
+      }
+    }
+  }
+  
+  /* Mejoras para la barra de pestañas */
+  ion-tab-bar {
+    --background: #1a1a1e;
+    --border: 1px solid rgba(255, 255, 255, 0.07);
+    --color: var(--ion-text-color-step-400);
+    --color-selected: var(--ion-color-primary);
+    
+    ion-tab-button {
+      --color: var(--ion-text-color-step-400);
+      --color-selected: var(--ion-color-primary);
+      
+      ion-icon {
+        color: var(--color);
+      }
+      
+      ion-label {
+        color: var(--color);
+      }
+      
+      &.tab-selected {
+        ion-icon, ion-label {
+          color: var(--ion-color-primary);
+        }
+        
+        &::before {
+          background: var(--ion-color-primary);
+        }
+      }
+    }
+  }
+  
+  /* Mejoras para alertas */
+  ion-alert {
+    --background: #242428;
+    --color: var(--ion-text-color);
+    
+    .alert-wrapper {
+      background: var(--ion-card-background);
+      border-radius: var(--border-radius);
+    }
+    
+    .alert-head {
+      .alert-title {
+        color: #ffffff;
+        font-weight: 600;
+      }
+      
+      .alert-sub-title {
+        color: var(--ion-text-color-step-400);
+      }
+    }
+    
+    .alert-message {
+      color: var(--ion-text-color-step-600);
+    }
+    
+    .alert-button-group {
+      button {
+        color: var(--ion-color-primary);
+        
+        &.alert-button-role-cancel {
+          color: var(--ion-text-color);
+        }
+      }
+    }
+  }
+  
+  /* Mejoras para loading */
+  ion-loading {
+    --background: rgba(0, 0, 0, 0.7);
+    --spinner-color: var(--ion-color-primary);
+    
+    .loading-wrapper {
+      background: var(--ion-card-background);
+      border-radius: var(--border-radius);
+      color: var(--ion-text-color);
+      
+      .loading-content {
+        color: var(--ion-text-color);
+      }
+    }
+  }
+  
+  /* Mejoras para toast */
+  ion-toast {
+    --background: #333337;
+    --color: #ffffff;
+    --button-color: #ffffff;
+    
+    &[color="primary"] {
+      --background: var(--ion-color-primary);
+    }
+    
+    &[color="success"] {
+      --background: var(--ion-color-success);
+    }
+    
+    &[color="warning"] {
+      --background: var(--ion-color-warning);
+      --color: #000000;
+      --button-color: #000000;
+    }
+    
+    &[color="danger"] {
+      --background: var(--ion-color-danger);
+    }
+  }
+  
+  /* Mejoras para segmentos */
+  ion-segment {
+    --background: #2a2a2e;
+    --color: var(--ion-text-color-step-400);
+    
+    ion-segment-button {
+      --color: var(--ion-text-color-step-400);
+      --color-checked: #ffffff;
+      --indicator-color: var(--ion-color-primary);
+      --background-hover: rgba(255, 255, 255, 0.05);
+      --background: transparent;
+      
+      ion-label {
+        color: var(--color);
+      }
+      
+      &.segment-button-checked {
+        ion-label {
+          color: var(--color-checked);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+  
+  /* Ajustes para el contenido */
+  ion-content {
+    --background: var(--ion-background-color);
+    color: var(--ion-text-color);
+  }
+  
+  /* Clases de utilidad para el tema oscuro */
+  .text-muted {
+    color: var(--ion-text-color-step-400) !important;
+  }
+  
+  .text-primary {
+    color: var(--ion-color-primary) !important;
+  }
+}
+
+/* Estilos para el botón de tema */
+.theme-toggle-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  
+  .theme-toggle {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    margin: 0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: var(--ion-color-light);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
+    .theme-icon {
+      font-size: 1.5rem;
+      transition: transform 0.2s ease;
+      
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+    
+    &:hover .theme-icon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* Importar paleta de colores oscuros de Ionic */
+@import "@ionic/angular/css/palettes/dark.class.css";
+
+/* Estilos de utilidad */
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--ion-text-color-step-400);
+}
+
+.text-primary {
+  color: var(--ion-color-primary);
+}
+
+.text-success {
+  color: var(--ion-color-success);
+}
+
+.text-warning {
+  color: var(--ion-color-warning);
+}
+
+.text-danger {
+  color: var(--ion-color-danger);
+}
+
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.ml-0 { margin-left: 0; }
+.mr-0 { margin-right: 0; }
+.mx-0 { margin-left: 0; margin-right: 0; }
+.my-0 { margin-top: 0; margin-bottom: 0; }
+.m-0 { margin: 0; }
+
+.pt-0 { padding-top: 0; }
+.pb-0 { padding-bottom: 0; }
+.pl-0 { padding-left: 0; }
+.pr-0 { padding-right: 0; }
+.px-0 { padding-left: 0; padding-right: 0; }
+.py-0 { padding-top: 0; padding-bottom: 0; }
+.p-0 { padding: 0; }
